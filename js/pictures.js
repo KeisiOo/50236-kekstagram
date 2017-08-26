@@ -56,7 +56,6 @@ var showOverlay = function (picture) {
 };
 
 var photos = generateGallery(25);
-
 var fragment = document.createDocumentFragment();
 
 for (var i = 0; i < photos.length; i++) {
@@ -64,10 +63,50 @@ for (var i = 0; i < photos.length; i++) {
 }
 pictures.appendChild(fragment);
 
-for (var j = 0; j < photos.length; j++) {
-  fragment.appendChild(showOverlay(photos[j]));
-}
+fragment.appendChild(showOverlay(photos[6]));
 overlay.appendChild(fragment);
 
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 
-// document.querySelector('.gallery-overlay').classList.remove('hidden');
+var galleryOverlay = document.querySelector('.gallery-overlay');
+var picture = document.querySelectorAll('.picture');
+var galleryOverlayClose = document.querySelector('.gallery-overlay-close');
+
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closePopup();
+  }
+};
+
+var openPopup = function () {
+  galleryOverlay.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+var closePopup = function () {
+  galleryOverlay.classList.add('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+for (var j = 0; j < picture.length; j++) {
+  picture[j].addEventListener('click', function () {
+    openPopup();
+  });
+
+  picture[j].addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      openPopup();
+    }
+  });
+}
+
+galleryOverlayClose.addEventListener('click', function () {
+  closePopup();
+});
+
+galleryOverlayClose.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closePopup();
+  }
+});
